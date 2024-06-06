@@ -1,27 +1,37 @@
 <?php
 
-use Illuminate\Foundation\Application;
-use Illuminate\Foundation\Configuration\Exceptions;
-use Illuminate\Foundation\Configuration\Middleware;
+  use App\Http\Middleware\EnsureEmailIsVerified;
+  use App\Payloads\WebResponsePayload;
+  use Illuminate\Foundation\Application;
+  use Illuminate\Foundation\Configuration\Exceptions;
+  use Illuminate\Foundation\Configuration\Middleware;
+  use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
+  use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-return Application::configure(basePath: dirname(__DIR__))
+  return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        web: __DIR__.'/../routes/web.php',
-        api: __DIR__.'/../routes/api.php',
-        commands: __DIR__.'/../routes/console.php',
-        health: '/up',
+      web: __DIR__ . '/../routes/web.php',
+      api: __DIR__ . '/../routes/api.php',
+      commands: __DIR__ . '/../routes/console.php',
+      health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->api(prepend: [
-            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-        ]);
-
-        $middleware->alias([
-            'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
-        ]);
-
-        //
+      $middleware->api(prepend: [
+        EnsureFrontendRequestsAreStateful::class,
+      ]);
+      $middleware->statefulApi();
+      $middleware->alias([
+        'verified' => EnsureEmailIsVerified::class,
+      ]);
+      $middleware->validateCsrfTokens(
+        except: ['api/*', '']
+      );
+      //
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+      $exceptions->render(function (NotFoundHttpException $notFoundHttpException) {
+        return response()
+          ->json((new WebResponsePayload("Entity not found", errorInformation: $notFoundHttpException->getMessage()))
+            ->getJsonResource())->setStatusCode(404);
+      });
     })->create();
