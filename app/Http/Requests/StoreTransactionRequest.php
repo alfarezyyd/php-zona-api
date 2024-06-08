@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Requests;
+  namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
+  use Illuminate\Foundation\Http\FormRequest;
 
-class StoreTransactionRequest extends FormRequest
-{
+  class StoreTransactionRequest extends FormRequest
+  {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+      return true;
     }
 
     /**
@@ -21,8 +21,11 @@ class StoreTransactionRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
-        ];
+      return [
+        'transaction_date' => 'required|date',
+        'description' => 'required|string',
+        'order_payload.*.id' => ["required", "numeric", "exists:products,id"],
+        'order_payload.*.quantity' => ["required", "numeric", "min:1"],
+      ];
     }
-}
+  }
