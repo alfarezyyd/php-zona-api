@@ -11,7 +11,7 @@
      */
     public function authorize(): bool
     {
-      return false;
+      return true;
     }
 
     /**
@@ -23,7 +23,7 @@
     {
       return [
         "name" => ["required", "string", "unique:categories,name", "max:100"],
-        "category_id" => ["integer", "gt:0"]
+        "category_id" => ["nullable", "integer", "gt:0"]
       ];
     }
   }
