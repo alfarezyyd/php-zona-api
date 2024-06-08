@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->date('transaction_date')->nullable(false);
             $table->unsignedInteger('total_price')->nullable(false);
-            $table->unsignedInteger('discount');
             $table->unsignedInteger('tax')->nullable(false);
             $table->text('description');
             $table->timestamps();

@@ -26,6 +26,9 @@
         'description' => 'required|string',
         'order_payload.*.id' => ["required", "numeric", "exists:products,id"],
         'order_payload.*.quantity' => ["required", "numeric", "min:1"],
+        'order_payload.*.price' => ["required", "numeric", "min:1"],
+        'total_price' => ["required", "numeric", "min:1"],
+        'tax' => ["required", "numeric", "min:1"],
       ];
     }
   }

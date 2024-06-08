@@ -16,7 +16,6 @@ return new class extends Migration
             $table->unsignedBigInteger('transaction_id')->nullable(false);
             $table->unsignedBigInteger('product_id')->nullable(false);
             $table->unsignedInteger('quantity')->nullable(false);
-            $table->unsignedInteger('price')->nullable(false);
             $table->unsignedInteger('subtotal')->nullable(false);
             $table->foreign('transaction_id')->references('id')->on('transactions')->onDelete('cascade');
             $table->timestamps();

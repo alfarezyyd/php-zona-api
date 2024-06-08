@@ -40,4 +40,10 @@
       return $this->hasMany(ProductResource::class, 'product_id', 'id');
     }
 
+        public function transactions(): BelongsToMany
+    {
+      return $this->belongsToMany(Transaction::class, 'transaction_items', 'product_id', 'transaction_id')
+        ->withPivot(['quantity', 'subtotal'])
+        ->using(TransactionItem::class);
+    }
   }

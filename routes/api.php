@@ -2,6 +2,7 @@
 
   use App\Http\Controllers\CategoryController;
   use App\Http\Controllers\ProductController;
+  use App\Http\Controllers\TransactionController;
   use Illuminate\Http\Request;
   use Illuminate\Support\Facades\Route;
 
@@ -21,4 +22,12 @@
     Route::post('', [CategoryController::class, 'store']);
     Route::post('/edit/{categoryId}', [CategoryController::class, 'update']);
     Route::delete('/{categoryId}', [CategoryController::class, 'destroy']);
+  });
+
+  Route::prefix('transactions')->group(function () {
+    Route::get('', [TransactionController::class, 'index']);
+    Route::post('', [TransactionController::class, 'store']);
+    Route::post('/edit/{transactionId}', [TransactionController::class, 'update']);
+    Route::delete('/{categoryId}', [TransactionController::class, 'destroy']);
+
   });
