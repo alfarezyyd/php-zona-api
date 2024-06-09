@@ -15,6 +15,7 @@
     public function toArray(Request $request): array
     {
       return [
+        'id' => $this['id'],
         'transaction_date' => $this['transaction_date'],
         'total_price' => $this['total_price'],
         'tax' => $this['tax'],
